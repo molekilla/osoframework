@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OsoFramework", "OsoFramework\OsoFramework.csproj", "{AE7364C3-055D-4C62-84D4-C608B85BAC6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OsoFramework.Http", "OsoFramework.Http\OsoFramework.Http.csproj", "{C1E3346B-5B8E-499C-80EF-DC84E90CF707}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OsoFramework.BrowserIntegration", "OsoFramework.BrowserIntegration\OsoFramework.BrowserIntegration.csproj", "{F81FD26A-7BDA-4193-8F71-3E84215D398E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OsoFramework.Tests", "OsoFramework.Tests\OsoFramework.Tests.csproj", "{486D1387-68EC-4589-8735-13768E6AC242}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OsoExamples", "OsoExamples\OsoExamples.csproj", "{1D194C8A-30D0-40F2-9F93-0B74CB7041F5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D194C8A-30D0-40F2-9F93-0B74CB7041F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D194C8A-30D0-40F2-9F93-0B74CB7041F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D194C8A-30D0-40F2-9F93-0B74CB7041F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D194C8A-30D0-40F2-9F93-0B74CB7041F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{486D1387-68EC-4589-8735-13768E6AC242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{486D1387-68EC-4589-8735-13768E6AC242}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{486D1387-68EC-4589-8735-13768E6AC242}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{486D1387-68EC-4589-8735-13768E6AC242}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE7364C3-055D-4C62-84D4-C608B85BAC6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE7364C3-055D-4C62-84D4-C608B85BAC6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE7364C3-055D-4C62-84D4-C608B85BAC6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE7364C3-055D-4C62-84D4-C608B85BAC6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1E3346B-5B8E-499C-80EF-DC84E90CF707}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1E3346B-5B8E-499C-80EF-DC84E90CF707}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1E3346B-5B8E-499C-80EF-DC84E90CF707}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1E3346B-5B8E-499C-80EF-DC84E90CF707}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F81FD26A-7BDA-4193-8F71-3E84215D398E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F81FD26A-7BDA-4193-8F71-3E84215D398E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F81FD26A-7BDA-4193-8F71-3E84215D398E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F81FD26A-7BDA-4193-8F71-3E84215D398E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = OsoFramework.csproj
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.TabWidth = 4
+		$1.EolMarker = Windows
+		$1.inheritsSet = Mono
+		$1.inheritsScope = text/plain
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		version = 0.1
+	EndGlobalSection
+EndGlobal
