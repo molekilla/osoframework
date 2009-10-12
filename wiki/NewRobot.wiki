@@ -2,7 +2,17 @@
 
 = Introduction =
 
-This tutorial explains how to create a new robot.
+This tutorial explains how to create a new web robot using OsoFramework.
 
 
-== Step 1 ==
+== Adding references to a new project ==
+
+Create a new solution and project from Visual Studio.NET or Mono Develop. Add the following references:
+
+ * `log4net (found in Third Party folder)`
+ * `System.Configuration`
+ * `System.Linq`
+ * `System.Xml`
+ * `OsoFramework`
+ * `OsoFramework.Http`
+ * `SubSonic (found in Third Party folder)`
