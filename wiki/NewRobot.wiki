@@ -24,7 +24,7 @@ Following the `OsoExamples` project organization, add a `DatabaseSchema` folder,
 
 == Creating the robot class ==
 
-Add a new class in Robot folder and add inheritance to [WebRobotBase http://code.google.com/p/osoframework/source/browse/trunk/OsoFramework/WebRobotBase.cs] and [IWebRobot http://code.google.com/p/osoframework/source/browse/trunk/OsoFramework/IWebRobot.cs]. Name the class `GoogleSearch`.
+Add a new class in Robot folder and add inheritance to [http://code.google.com/p/osoframework/source/browse/trunk/OsoFramework/WebRobotBase.cs WebRobotBase ] and [http://code.google.com/p/osoframework/source/browse/trunk/OsoFramework/IWebRobot.cs IWebRobot]. Name the class `GoogleSearch`.
 
 A required setting is to name your robot, so name your robot `GoogleSearch`
 
