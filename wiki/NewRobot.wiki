@@ -1,0 +1,8 @@
+#summary Creating a new robot
+
+= Introduction =
+
+This tutorial explains how to create a new robot.
+
+
+== Step 1 ==
