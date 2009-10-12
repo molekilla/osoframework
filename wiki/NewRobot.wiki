@@ -16,11 +16,11 @@ Create a new solution and project from Visual Studio.NET or Mono Develop. Add th
  * `OsoFramework`
  * `OsoFramework.Http`
  * `SubSonic (found in Third Party folder)`
-
+`
 Following the `OsoExamples` project organization, add a `DatabaseSchema` folder, which stores the database schemas and Robot folder, storing the robots.
 
 == Creating the database schema ==
-In DatabaseSchema, create a new class named `SearchResult.cs`. Inherit from IParseData and add the following properties described below.
+In the `DatabaseSchema` folder, create a new class named `SearchResult.cs`. Inherit from IParseData and add the following properties described below.
 
 {{{
 public class SearchResult: IParseData 
@@ -64,7 +64,7 @@ public class SearchResult: IParseData
         }
 }}}
 
-Create another class called SearchResultDataRepository, which is the repository for our new search results schema.
+Create another class called `SearchResultDataRepository`, which is the repository for our new search results schema.
 
 {{{
  public class SearchResultDataRepository: DataRepositoryBase 
