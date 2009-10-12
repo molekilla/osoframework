@@ -18,3 +18,25 @@ Create a new solution and project from Visual Studio.NET or Mono Develop. Add th
  * `SubSonic (found in Third Party folder)`
 
 Following the `OsoExamples` project organization, add a `DatabaseSchema` folder, which stores the database schemas and Robot folder, storing the robots.
+
+== Creating the database schema ==
+
+
+== Creating the robot class ==
+
+Add a new class in Robot folder and add inheritance to [WebRobotBase http://code.google.com/p/osoframework/source/browse/trunk/OsoFramework/WebRobotBase.cs] and [IWebRobot http://code.google.com/p/osoframework/source/browse/trunk/OsoFramework/IWebRobot.cs]. Name the class `GoogleSearch`.
+
+A required setting is to name your robot, so name your robot `GoogleSearch`
+
+{{{
+ // IWebRobot implementation     
+        public string Name
+        {
+            get
+            {
+                return "OsoFrameworkGoogleSearch";
+            }
+        }
+}}}
+
+In the Start method, leave it empty for now.
