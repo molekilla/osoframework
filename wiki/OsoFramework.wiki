@@ -1,0 +1,13 @@
+#summary OsoFramework
+
+= Why OsoFramework =
+
+Because my dog looks like a bear. And also it rhymes with Mono and Awesome.
+
+
+= Details =
+
+Probably it will be expanded with:
+  * Dynamic LINQ to have queries configure
+  * Web Management for executing robots and monitoring
+  * Support for non XML based data (JSON)
