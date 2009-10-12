@@ -23,14 +23,14 @@ Following the `OsoExamples` project organization, add a `DatabaseSchema` folder,
 In the `DatabaseSchema` folder, create a new class named `SearchResult.cs`. Inherit from IParseData and add the following properties described below.
 
 {{{
-public class SearchResult: IParseData 
+        public class SearchResult: IParseData 
         {
                 public SearchResult()
                 {
-            Title = string.Empty;
-            Url = string.Empty;
-            Description = string.Empty;
-            LastUpdated = DateTime.Now;
+                     Title = string.Empty;
+                     Url = string.Empty;
+                     Description = string.Empty;
+                     LastUpdated = DateTime.Now;
                 }
                 
         /// <summary>
@@ -69,14 +69,11 @@ Create another class called `SearchResultDataRepository`, which is the repositor
 {{{
  public class SearchResultDataRepository: DataRepositoryBase 
 // Use IDataRepositoryBase if a custom data access API is required
-        {                               
+  {                               
                 public SearchResultDataRepository()
                 {
                         dataRespository = new SimpleRepository("PublicSearchDatabase",SimpleRepositoryOptions.RunMigrations);
-                }
-
-        
-
+                }       
     }
 }}}
 
