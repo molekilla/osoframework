@@ -3,17 +3,17 @@
 // From: Panama
 using System;
 using OsoFramework;
+using System.Threading;
 
 
 namespace OsoExamples
 {
 	class MainClass
-	{
+	{     
 		public static void Main (string[] args)
 		{
-			WebRobotLoader.Run();	
+            WebRobotLoader.RunService();
 		}
-	}
-	
 
+	}
 }

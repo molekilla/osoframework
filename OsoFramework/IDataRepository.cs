@@ -22,6 +22,8 @@ namespace OsoFramework
 
 	public interface IDataRepository
 	{
+        void LoadRepository(string connectionString);
+        string ConnectionString { get; set; }
         IEnumerable<T> FindBy<T>(object id) where T : class, IParseData, new();
         IEnumerable<T> FindAll<T>() where T : class, new();
 		void Update<T>(T data) where T : class, new();

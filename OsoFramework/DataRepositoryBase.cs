@@ -14,6 +14,21 @@ namespace OsoFramework
 
         public DataRepositoryBase()
         {
+           
+        }
+
+        public void LoadRepository(string connectionString)
+        {
+            ConnectionString = connectionString;
+            dataRespository = new SimpleRepository(ConnectionString, SimpleRepositoryOptions.RunMigrations);
+        }
+
+   
+
+        public string ConnectionString
+        {
+            get;
+            set;
         }
         #region IDataRepository implementation
 

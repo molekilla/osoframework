@@ -9,11 +9,17 @@ namespace OsoFramework.Http
 {
 	public static class HttpNavigationLinkedNodeAddons
 	{
+        public static LinkedListNode<HttpNavigationStep> FindByName(this LinkedListNode<HttpNavigationStep> step, string name)
+        {
+            return step.Parent().FindByName(name);
+        }
+
+
         public static HttpNavigation Parent(this LinkedListNode<HttpNavigationStep> step)
         {
             return step.List as HttpNavigation;
         }
-
+     
         public static HttpNavigationStep Read(this LinkedListNode<HttpNavigationStep> step)
         {
             step.Value.ResponseData = step.Parent().Read(step.Value);

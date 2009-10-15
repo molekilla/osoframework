@@ -10,7 +10,12 @@ using System.Text;
 namespace OsoFramework
 {
     public interface IWebRobot
-    {        
+    {
+        WebRobotManagementStatus Status
+        {
+            get;
+            set;
+        }
 		string Name
 		{
 			get;
