@@ -10,68 +10,102 @@ using Microsoft.Practices.Unity;
 using System.Configuration;
 using log4net;
 using log4net.Config;
+using System.ServiceModel.Web;
+using OsoFramework.Management;
+using System.ServiceModel.Description;
+using System.ServiceModel;
+using OsoFrameworkManager;
 
 namespace OsoFramework
 {
     public class WebRobotLoader
     {
-		private static ILog Log = LogManager.GetLogger(typeof(WebRobotLoader));
-        
-		public WebRobotLoader()
+        private static ILog Log = LogManager.GetLogger(typeof(WebRobotLoader));
+
+        static WebServiceHost host;
+
+        static WebRobotLoader()
         {
+            XmlConfigurator.Configure();
+            host = new WebServiceHost(typeof(WebRobotDashboard),
+            new Uri(ConfigurationManager.AppSettings["OsoFx.ServiceUrl"]));
         }
 
-        public static void Run()
+        private static void PingService()
         {
-			
+            ChannelFactory<IWebRobotService> cf = null;
             try
             {
-				XmlConfigurator.Configure();
-			
-                IUnityContainer container = new UnityContainer();
-                UnityConfigurationSection section = (UnityConfigurationSection)ConfigurationManager.GetSection("unity");
-                section.Containers.Default.Configure(container);
+                cf = new ChannelFactory<IWebRobotService>(new WebHttpBinding(), ConfigurationManager.AppSettings["OsoFx.ServiceUrl"]);
+                cf.Endpoint.Behaviors.Add(new WebHttpBehavior());
+                var channel = cf.CreateChannel();
+                var a = channel.ListWebRobots();
+                cf.Close();
+            }
+            catch (Exception ex)
+            {
+                cf.Abort();
+                Console.WriteLine(ex);
+                // ignore, probably client down
+            }
+        }
+        public static void RunService()
+        {
 
+            try
+            {
+                // Start WCF REST Service
+                ServiceEndpoint endpoint = host.AddServiceEndpoint(typeof(IWebRobotService), new WebHttpBinding(), "");
+                host.Description.Behaviors.Find<ServiceDebugBehavior>().IncludeExceptionDetailInFaults = true;
+                host.Description.Behaviors.Find<ServiceDebugBehavior>().HttpHelpPageEnabled = false;
 
-                IEnumerable<IWebRobot> robots = container.ResolveAll<IWebRobot>();
+                host.OpenTimeout = TimeSpan.FromSeconds(6000);
+                host.Open();
+                PingService();
+                Log.Info("OsoFx Service is running at " + ConfigurationManager.AppSettings["OsoFx.ServiceUrl"]);
+                Console.WriteLine("OsoFx Service is running at {0}", ConfigurationManager.AppSettings["OsoFx.ServiceUrl"]);
+                Console.WriteLine("Press ANY KEY to exit");
+                Console.Read();
+                host.Close();
+                LogServiceClient client = new LogServiceClient(ConfigurationManager.AppSettings["OsoFx.LogServiceUrl"]);
+                client.WriteLog(new WebRobotStreamLogLine[] 
+                {
+                    new WebRobotStreamLogLine 
+                    {
+                        Line = "service closed",
+                        RobotName = "all" , 
+                        Timestamp = DateTime.Now 
+                    }
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Log.Error(ex);
+            }
+        }
+        public static void RunDirect()
+        {
+
+            try
+            {
+                var robots = ServiceLocator.ReadWebRobotsFromConfiguration();
 
                 foreach (IWebRobot robot in robots)
                 {
-                    // You can also use BuildUp to set DataWriter type
-                    robot.InitializeHttpCommand();
-                    StartRobot(robot);
+                    WebRobotProcess.Run(new WebRobotProcess { WebRobot = robot });
                 }
             }
             catch (Exception ex)
             {
-				Console.WriteLine(ex.ToString());
-				System.Diagnostics.Debug.WriteLine(ex.ToString());
-				Log.Error(ex);
-          
+                Console.WriteLine(ex.ToString());
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+                Log.Error(ex);
             }
         }
-		
-		private static void StartRobot(IWebRobot robot)
-		{
-			int retries = 0;
-   			do
-            {
-                try
-                {
-                    robot.Start();
-                }
-                catch (System.Net.WebException webex)
-                {
-                    Log.Debug("OsoFx Ignored Error", webex);
-                    // ignore
-                }
-                catch (Exception ex)
-                {
-                    Log.Error("Oso Fx: " + robot.Name + " robot", ex);
-                    retries++;
-                }
-            }
-            while (retries < 25);			
-		}
+
+
     }
 }

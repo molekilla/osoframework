@@ -24,14 +24,9 @@ namespace OsoExamples.DatabaseSchema
 
     public class RealEstateDataRepository : DataRepositoryBase // IDataRepositoryBase if custom data access
 	{
-		
-		
-		public RealEstateDataRepository ()
-		{
-			dataRespository = new SimpleRepository("Test",SimpleRepositoryOptions.RunMigrations);
-		}
 
-        
-
+        public RealEstateDataRepository()
+        {
+        }
     }
 }

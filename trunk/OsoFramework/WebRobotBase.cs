@@ -9,6 +9,9 @@ using OsoFramework.Http;
 using System.Configuration;
 using log4net;
 using log4net.Config;
+using System.Reflection;
+using OsoFrameworkManager;
+using OsoFramework.Management;
 
 
 namespace OsoFramework
@@ -18,13 +21,55 @@ namespace OsoFramework
         protected string ENCODING_ISO = "ISO-8859-1";
         protected string ENCODING_ISO_15 = "ISO-8859-15";
         protected string ENCODING_UTF8 = System.Text.Encoding.UTF8.EncodingName;
-        private static ILog Log = LogManager.GetLogger(typeof(WebRobotBase));
+        private static ILog Log = null;
         List<HttpSettings> steps = new List<HttpSettings>();
-
+        LogServiceClient logClient;
+        WebRobotManagementStatus status = WebRobotManagementStatus.IDLE;
+        public event EventHandler OnStatusChanged;
 
         public WebRobotBase()
         {
+            
             XmlConfigurator.Configure();
+            
+            if (Log == null)
+            {
+                var methodBase = MethodBase.GetCurrentMethod();
+                Type t = methodBase.DeclaringType;
+                Log = LogManager.GetLogger(t);
+            }
+            logClient = new LogServiceClient(ConfigurationManager.AppSettings["OsoFx.LogServiceUrl"]);
+            OnStatusChanged += new EventHandler(WebRobotBase_OnStatusChanged);
+        }
+
+        void WebRobotBase_OnStatusChanged(object sender, EventArgs e)
+        {
+            logClient.PingStatus(Name, Status);
+        }
+
+        public void SetConnectionString(string connectionString)
+        {
+            this.DatabaseRepository.LoadRepository(connectionString);
+        }
+
+        // IWebRobot implementation	
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        public WebRobotManagementStatus Status
+        {
+            get
+            {
+                return status;
+            }
+            set
+            {
+                status = value;
+                OnStatusChanged(this, EventArgs.Empty);
+            }
         }
         public IDataRepository DatabaseRepository
         {
@@ -38,11 +83,33 @@ namespace OsoFramework
         protected void Print(object data)
         {
             Console.WriteLine(data);
+            logClient.WriteLog(
+                new WebRobotStreamLogLine[] 
+                {
+                   new WebRobotStreamLogLine
+                   {
+                       Line = data.ToString(),
+                       RobotName = this.Name,
+                       Timestamp = DateTime.Now
+                   }
+                });
             Log.Info(data);
+            
         }
         protected void Error(object err)
         {
+            Console.WriteLine(err.ToString());
             Log.Error(err);
+            logClient.WriteLog(
+                new WebRobotStreamLogLine[] 
+                {
+                   new WebRobotStreamLogLine
+                   {
+                       Line = err.ToString(),
+                       RobotName = this.Name,
+                       Timestamp = DateTime.Now
+                   }
+                });
         }
         public void InitializeHttpCommand()
         {
@@ -83,7 +150,6 @@ namespace OsoFramework
                 Navigation.AddLast(step);
             }
 
-           
         }
     }
 }

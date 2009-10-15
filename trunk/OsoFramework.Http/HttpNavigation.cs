@@ -15,10 +15,21 @@ namespace OsoFramework.Http
         {
             client = command;
         }
+        public LinkedListNode<HttpNavigationStep> FindByName(string name)
+        {
+            var step =
+                from s in this
+                where s.Name == name
+                select s;
+
+           
+            return this.Find(step.FirstOrDefault());
+        }
         internal string Read(HttpNavigationStep step)
         {
             return client.Read(step);
         }
+
         internal string Read(HttpNavigationStep step, params string[] parameters)
         {
             return client.Read(new HttpSettings

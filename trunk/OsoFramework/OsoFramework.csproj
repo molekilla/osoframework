@@ -13,6 +13,7 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -25,9 +26,9 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,13 +56,26 @@
   <ItemGroup>
     <Compile Include="DataRepositoryBase.cs" />
     <Compile Include="IWebRobot.cs" />
+    <Compile Include="Management\DashboardResponse.cs" />
+    <Compile Include="Management\IWebManagementLog.cs" />
+    <Compile Include="Management\IWebRobotDashboard.cs" />
+    <Compile Include="Management\LogServiceClient.cs" />
+    <Compile Include="Management\WebRobotDashboard.cs" />
+    <Compile Include="Management\WebRobotDashboardItem.cs" />
+    <Compile Include="Management\WebRobotStreamLog.cs" />
+    <Compile Include="Management\WebRobotStreamLogLine.cs" />
     <Compile Include="NavigationConfiguration.cs" />
     <Compile Include="NavigationStepConfigCollection.cs" />
-    <Compile Include="RobotManagementDTO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceLocator.cs" />
     <Compile Include="WebRobotBase.cs" />
     <Compile Include="WebRobotLoader.cs" />
     <Compile Include="IDataRepository.cs" />
     <Compile Include="IParseData.cs" />
+    <Compile Include="WebRobotLogServiceLoader.cs" />
+    <Compile Include="WebRobotManagementStatus.cs" />
+    <Compile Include="WebRobotManager.cs" />
+    <Compile Include="WebRobotProcess.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OsoFramework.Http\OsoFramework.Http.csproj">
@@ -74,33 +88,37 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ThirdParty\log4net\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ObjectBuilder2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.ObjectBuilder2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ThirdParty\Unity\Microsoft.Practices.ObjectBuilder2.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.Unity, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ThirdParty\Unity\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ThirdParty\Unity\Microsoft.Practices.Unity.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity.StaticFactory, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.Unity.StaticFactory, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ThirdParty\Unity\Microsoft.Practices.Unity.StaticFactory.dll</HintPath>
     </Reference>
-    <Reference Include="SubSonic.Core, Version=3.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SubSonic.Core, Version=3.0.0.3, Culture=neutral, PublicKeyToken=null">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\ThirdParty\Subsonic\SubSonic.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Core" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Configuration" />
     <Reference Include="System" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -111,7 +129,7 @@
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
       <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
-      <Install>true</Install>
+      <Install>false</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
       <Visible>False</Visible>

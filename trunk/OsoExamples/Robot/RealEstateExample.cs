@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using log4net;
 using System.Configuration;
 using System.Xml.Linq;
 using OsoFramework;
@@ -34,21 +33,8 @@ namespace OsoExamples.Robot
             Main();
         }
 
-        // IWebRobot implementation	
-        public string Name
-        {
-            get
-            {
-                return "Real Estate Example";
-            }
-        }
-
-
         private void Main()
         {
-            // Step 1: Home
-            IEnumerable<XElement> states = null;
-
             // using read
             string goog1 = Read(new HttpSettings { Query = "http://www.google.com" });
 
@@ -60,7 +46,12 @@ namespace OsoExamples.Robot
             
             // Example: Parse site using registed navigation steps
             // Get states
-            states = Navigation.First.Read().ParseXElement
+            // Navigation
+            //  
+            Navigation
+                .FindByName("start")
+                .Read()
+                .ParseXElement
                 (data =>
                     {
                         return from lnk in GetTagElements(data, "<body", "</body>").HtmlAnchors()
@@ -68,64 +59,63 @@ namespace OsoExamples.Robot
                                     && lnk.Attribute("HREF").Value.StartsWith("/sv/buscar.html")
                                 select lnk;
                     }
-                );
+                ).ReduceXElement(ReadState);
 
-            for (int i = 0; i < states.Count(); i++)
-            {
-                string state = states.ElementAt(i).Value;
-                Print(String.Format("Downloading {0} / {1} from site with state {2}",
-                    GetPercentageFrom(i, states.Count()), "100%", state));
+            // reduce
+        }
 
-                // Step 2: Provincia
-                var itemsByState = Navigation.First.Next
-                    .Read(states.ElementAt(i).Attribute("HREF").Value)
-                    .ParseXElement
-                    (data =>
-                        {
-                            return (from div in GetTagElements(data, "<body", "</body>").Descendants("DIV")
-                                    where div.Attribute("CLASS") != null
-                                    && div.Attribute("CLASS").Value == "caja_ficha_370"
-                                    && div.Descendants("H3").Count() == 1
-                                    select div).FirstOrDefault().HtmlAnchors();
-                        }
-                    );
+        private void ReadState(XElement item, int position, int count)
+        {
+            string state = item.Value;
+            Print(String.Format("Downloading {0} / {1} from site with state {2}",
+                GetPercentageFrom(position, count), "100%", state));
 
-                if (itemsByState == null) return;
-                // Save to database
-                foreach (var item in itemsByState)
+            // Step 2: Provincia
+            Navigation
+                .FindByName("provincia")
+                .Read(item.Attribute("HREF").Value)
+                .ParseXElement
+                (data =>
+                    {
+                        return (from div in GetTagElements(data, "<body", "</body>").Descendants("DIV")
+                                where div.Attribute("CLASS") != null
+                                && div.Attribute("CLASS").Value == "caja_ficha_370"
+                                && div.Descendants("H3").Count() == 1
+                                select div).FirstOrDefault().HtmlAnchors();
+                    }
+                ).ReduceXElement(ReadPlace);
+
+            // Reduce
+   
+        }
+
+        private void ReadPlace(XElement item, int position, int count)
+        {
+                int start = item.Value.IndexOf("(");
+                string area = item.Value.Substring(0, start);
+
+                // Find  if item exists
+                var existingItem = DatabaseRepository.FindBy<RealEstateAd>(area);
+                if (existingItem != null && existingItem.Count() == 0)
                 {
-                    int start = item.Value.IndexOf("(");
-                    string area = item.Value.Substring(0, start);
-
-                    string comprarUrl = item.Attribute("HREF").Value;
-                    string alquilarUrl = item.Attribute("HREF").Value.Replace("comprar-", "alquilar-");
-
-                    // Find  if item exists
-                    var existingItem = DatabaseRepository.FindBy<RealEstateAd>(area);
-                    if (existingItem != null && existingItem.Count() == 0)
-                    {
-                        DatabaseRepository.Insert<RealEstateAd>(
-                            new RealEstateAd
-                            {
-                                Provincia = area
-                            });
-                        Print(area + " added.");
-                    }
-                    else
-                    {
-                        var editItem = existingItem.FirstOrDefault();
-                        editItem.LastUpdated = DateTime.Now;
-                        editItem.Provincia = area;
-                        DatabaseRepository.Update<RealEstateAd>(editItem);
-                        Print(area + " updated.");
-                    }
+                    DatabaseRepository.Insert<RealEstateAd>(
+                        new RealEstateAd
+                        {
+                            Provincia = area
+                        });
+                    Print(area + " added.");
+                }
+                else
+                {
+                    var editItem = existingItem.FirstOrDefault();
+                    editItem.LastUpdated = DateTime.Now;
+                    editItem.Provincia = area;
+                    DatabaseRepository.Update<RealEstateAd>(editItem);
+                    Print(area + " updated.");
                 }
             }
         }
 
-
-
-
     }
-}
+
 
