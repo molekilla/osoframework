@@ -67,7 +67,7 @@ namespace OsoExamples.Robot
         private void ReadState(XElement item, int position, int count)
         {
             string state = item.Value;
-            Print(String.Format("Downloading {0} / {1} from site with state {2}",
+            Info(String.Format("Downloading {0} / {1} from site with state {2}",
                 GetPercentageFrom(position, count), "100%", state));
 
             // Step 2: Provincia
@@ -103,7 +103,7 @@ namespace OsoExamples.Robot
                         {
                             Provincia = area
                         });
-                    Print(area + " added.");
+                    Info(area + " added.");
                 }
                 else
                 {
@@ -111,7 +111,7 @@ namespace OsoExamples.Robot
                     editItem.LastUpdated = DateTime.Now;
                     editItem.Provincia = area;
                     DatabaseRepository.Update<RealEstateAd>(editItem);
-                    Print(area + " updated.");
+                    Info(area + " updated.");
                 }
             }
         }

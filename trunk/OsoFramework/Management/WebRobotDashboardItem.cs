@@ -12,7 +12,6 @@ namespace OsoFramework.Management
 
         public string Name { get; set; }
         public WebRobotManagementStatus Status { get; set; }
-        public string ScriptingCode { get; set; }
         public string DatabaseConnectionString { get; set; }
 	}
 }

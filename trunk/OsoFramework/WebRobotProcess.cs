@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using log4net;
+using OsoFrameworkManager;
+using OsoFramework.Management;
 
 namespace OsoFramework
 {
@@ -30,6 +32,10 @@ namespace OsoFramework
                 robot.InitializeHttpCommand();
                 robot.Status = WebRobotManagementStatus.RUNNING;
                 robot.Start();
+            
+                // ended
+                Thread.CurrentThread.Abort();
+               
             }
             catch (ThreadAbortException abort)
             {
@@ -39,6 +45,16 @@ namespace OsoFramework
             {
                 robot.Status = WebRobotManagementStatus.ERROR;
                 Log.Error("Oso Fx: " + robot.Name + " robot", ex);
+                LogServiceClient log = new LogServiceClient();
+                log.WriteLog(new WebRobotStreamLogLine[]
+                {
+                    new WebRobotStreamLogLine
+                    {
+                         Line = ex.ToString(),
+                         RobotName = robot.Name,
+                         Timestamp = DateTime.Now
+                    }
+                });
             }
         }
 
@@ -47,7 +63,6 @@ namespace OsoFramework
         {
             Log.Info(this.WebRobot.Name + " stopped.");
             this.thread.Abort();
-            thread = new Thread(ProcessRobot);
         }
         
         public static void Run(WebRobotProcess process)
@@ -62,15 +77,23 @@ namespace OsoFramework
             {
                 try
                 {
-                    Log.Info(this.WebRobot.Name + " running.");
-                    thread.Start(this);
+                    if (!thread.IsAlive)
+                    {
+                        if (thread.ThreadState == ThreadState.Stopped
+                            || thread.ThreadState == ThreadState.Aborted)
+                        {
+                            thread = new Thread(ProcessRobot);
+                        }
+                        if (thread.Name == null || thread.Name.Length == 0)
+                        {
+                            thread.Name = this.WebRobot.Name;
+                        }
+                        Log.Info(this.WebRobot.Name + " running.");
+                        thread.Start(this);
+                    }
                 }
                 catch (Exception ex)
-                {
-                    lock (WebRobot)
-                    {
-                        this.WebRobot.Status = WebRobotManagementStatus.ERROR;
-                    }
+                {     
                     Log.Error("Oso Fx: " + this.WebRobot.Name + " robot", ex);
                 }
             }

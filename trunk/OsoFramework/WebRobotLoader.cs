@@ -59,7 +59,6 @@ namespace OsoFramework
                 host.Description.Behaviors.Find<ServiceDebugBehavior>().IncludeExceptionDetailInFaults = true;
                 host.Description.Behaviors.Find<ServiceDebugBehavior>().HttpHelpPageEnabled = false;
 
-                host.OpenTimeout = TimeSpan.FromSeconds(6000);
                 host.Open();
                 PingService();
                 Log.Info("OsoFx Service is running at " + ConfigurationManager.AppSettings["OsoFx.ServiceUrl"]);
@@ -67,8 +66,9 @@ namespace OsoFramework
                 Console.WriteLine("Press ANY KEY to exit");
                 Console.Read();
                 host.Close();
-                LogServiceClient client = new LogServiceClient(ConfigurationManager.AppSettings["OsoFx.LogServiceUrl"]);
-                client.WriteLog(new WebRobotStreamLogLine[] 
+
+                LogServiceClient logclient = new LogServiceClient();
+                logclient.WriteLog(new WebRobotStreamLogLine[] 
                 {
                     new WebRobotStreamLogLine 
                     {
@@ -77,6 +77,7 @@ namespace OsoFramework
                         Timestamp = DateTime.Now 
                     }
                 });
+                logclient.PingStatus("all", WebRobotManagementStatus.STOPPED);
 
             }
             catch (Exception ex)
