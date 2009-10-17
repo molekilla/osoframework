@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 
 
+
 namespace OsoFramework.Management
 {
     public class WebRobotDashboard : IWebRobotService
@@ -32,7 +33,20 @@ namespace OsoFramework.Management
                 Console.WriteLine(ex.ToString());
             }
         }
-      
+
+        public void AddRobotScript(string name, string script)
+        {
+            var robot = ScriptingRobot.RunRobotScript(name, script);
+            if (robotManager.Contains(name))
+            {
+                robotManager[name].WebRobot = robot;
+            }
+            else
+            {
+                robotManager.Add(robot);
+            }
+        }
+
         public WebRobotDashboardItem[] ListWebRobots()
         {
             List<WebRobotDashboardItem> items = new List<WebRobotDashboardItem>();
@@ -42,7 +56,6 @@ namespace OsoFramework.Management
                 {
                     DatabaseConnectionString = item.DatabaseRepository.ConnectionString,
                     Name = item.Name,
-                    ScriptingCode = string.Empty,
                     Status = item.Status
                 });
             }
@@ -58,6 +71,7 @@ namespace OsoFramework.Management
 
         public DashboardResponse Start(string name)
         {
+
             robotManager[name].Run();
 
             return new DashboardResponse { Message = "Started", Passed = true };
@@ -70,7 +84,6 @@ namespace OsoFramework.Management
             {
                 Name = name,
                 DatabaseConnectionString = robot.DatabaseRepository.ConnectionString,
-                ScriptingCode = string.Empty,
                 Status = robot.Status
             };
         }

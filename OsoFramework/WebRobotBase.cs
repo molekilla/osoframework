@@ -23,7 +23,7 @@ namespace OsoFramework
         protected string ENCODING_UTF8 = System.Text.Encoding.UTF8.EncodingName;
         private static ILog Log = null;
         List<HttpSettings> steps = new List<HttpSettings>();
-        LogServiceClient logClient;
+        LogServiceClient logclient = new LogServiceClient();
         WebRobotManagementStatus status = WebRobotManagementStatus.IDLE;
         public event EventHandler OnStatusChanged;
 
@@ -38,13 +38,17 @@ namespace OsoFramework
                 Type t = methodBase.DeclaringType;
                 Log = LogManager.GetLogger(t);
             }
-            logClient = new LogServiceClient(ConfigurationManager.AppSettings["OsoFx.LogServiceUrl"]);
+            
             OnStatusChanged += new EventHandler(WebRobotBase_OnStatusChanged);
         }
 
         void WebRobotBase_OnStatusChanged(object sender, EventArgs e)
         {
-            logClient.PingStatus(Name, Status);
+            // LogServiceClient client = new LogServiceClient();
+            logclient.PingStatus(Name, Status);
+            if ( Status == WebRobotManagementStatus.STOPPED 
+                || Status == WebRobotManagementStatus.ERROR )
+            Status = WebRobotManagementStatus.IDLE;
         }
 
         public void SetConnectionString(string connectionString)
@@ -80,10 +84,11 @@ namespace OsoFramework
         {
             return (Decimal.Divide(page, total) * 100).ToString("0.00") + "%";
         }
-        protected void Print(object data)
+        public void Info(object data)
         {
+            
             Console.WriteLine(data);
-            logClient.WriteLog(
+            logclient.WriteLog(
                 new WebRobotStreamLogLine[] 
                 {
                    new WebRobotStreamLogLine
@@ -96,11 +101,11 @@ namespace OsoFramework
             Log.Info(data);
             
         }
-        protected void Error(object err)
+        public void Error(object err)
         {
             Console.WriteLine(err.ToString());
             Log.Error(err);
-            logClient.WriteLog(
+            logclient.WriteLog(
                 new WebRobotStreamLogLine[] 
                 {
                    new WebRobotStreamLogLine

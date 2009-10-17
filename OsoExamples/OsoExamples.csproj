@@ -86,9 +86,11 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Robot\GoogleExample.cs" />
     <Compile Include="Robot\RealEstateExample.cs" />
     <Compile Include="DatabaseSchema\RealEstateDataRepository.cs" />
     <Compile Include="DatabaseSchema\RealEstateAd.cs" />
+    <Content Include="ScriptingCode\IronPythonTest.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

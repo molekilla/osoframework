@@ -11,6 +11,10 @@ namespace OsoFramework.Management
 	public interface IWebRobotService
 	{
         [OperationContract]
+        [WebInvoke(UriTemplate = "AddRobotScript", Method = "POST", BodyStyle = WebMessageBodyStyle.Wrapped)]
+        void AddRobotScript(string name, string scriptCode);
+
+        [OperationContract]
         [WebInvoke(UriTemplate = "ListWebRobots", Method = "GET",BodyStyle=WebMessageBodyStyle.Wrapped)]
         WebRobotDashboardItem[] ListWebRobots();
 

@@ -1,0 +1,20 @@
+﻿import sys
+import clr
+
+def ParseHtml(response):
+	return response
+
+# get google
+settings.Query="http://www.google.com"
+text = self.Read(settings)
+self.Info(text)
+
+
+xmldoc = self.ReadXml(settings, ParseHtml)
+self.Info(xmldoc)
+
+xmldoc = self.ReadXml(settings, ParseHtml)
+self.Info(xmldoc.Descendants().Count())
+
+for item in xmldoc.Descendants():
+ print item

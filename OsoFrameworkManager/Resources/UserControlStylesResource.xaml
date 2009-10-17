@@ -1,0 +1,89 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="StartStopStyle" TargetType="ToggleButton">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="{x:Null}">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush 
+		StartPoint="0,0.30" EndPoint="0,1" 
+		SpreadMethod="Reflect" ColorInterpolationMode="ScRgbLinearInterpolation" >
+                            <GradientStop Color="#FFFFFFFF" Offset="0" />
+                            <GradientStop Color="#FFC51010" Offset="1" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush 
+		StartPoint="0,0.30" EndPoint="0,1" 
+		SpreadMethod="Reflect" ColorInterpolationMode="ScRgbLinearInterpolation" >
+                            <GradientStop Color="#FF0093FF" Offset="0" />
+                            <GradientStop Color="#FF100D0D" Offset="1" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush 
+		StartPoint="0,0.30" EndPoint="0,1" 
+		SpreadMethod="Reflect" ColorInterpolationMode="ScRgbLinearInterpolation" >
+                            <GradientStop Color="#FF06AC1C" Offset="0" />
+                            <GradientStop Color="#FF100D0D" Offset="1" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="ListItemTitle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontFamily" Value="Tahoma"/>
+      <!--  <Setter Property="Foreground" Value="Black"/> -->
+        <Setter Property="FontWeight" Value="Normal" />
+    </Style>
+  
+    <Style x:Key="TextInput" TargetType="TextBox">
+        <Setter Property="Width" Value="400"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="GhostWhite"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="FontFamily" Value="Verdana"/>
+    </Style>
+    <Style x:Key="TextInputLabel" TargetType="Label">
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="FontFamily" Value="Verdana"/>
+    </Style>
+    <Style x:Key="ServiceMethodStackPanel" TargetType="StackPanel">        
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Orientation" Value="Horizontal"/>
+    </Style>
+    <Style x:Key="FormDescription" TargetType="Label">
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="Background" Value="White" />
+            <!--<Setter.Value>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0.5">
+                    <GradientStop Color="#809FFF"/>
+                    <GradientStop Color="#FFFFFF" Offset="2"/>
+                </LinearGradientBrush>
+            </Setter.Value>-->
+        <Setter Property="Height" Value="30"/>        
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="Tahoma"/>
+    </Style>
+</ResourceDictionary>

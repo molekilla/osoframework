@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:main="clr-namespace:OsoFrameworkManager">
+    <DataTemplate x:Key="RobotButtonTemplate">
+        <DataTemplate.Resources>
+            <ResourceDictionary Source="/Resources/UserControlStylesResource.xaml" />
+        </DataTemplate.Resources>
+        <StackPanel Orientation="Horizontal">
+        <ToggleButton Name="StartStopButton" IsThreeState="True" IsChecked="{Binding Path=IsToggleChecked}"
+                      HorizontalAlignment="Left" Width="20"
+                      Padding="0,0,0,0" Style="{StaticResource StartStopStyle}"
+                    Command="{x:Static main:AppCommands.StartStopRobotCommand}" 
+                          CommandTarget="{Binding ElementName=StartStopButton}">
+                <!-- <Image  Source="pack://application:,,,/OsoFrameworkManager;component/Images/ajax-loader.gif" />-->
+        </ToggleButton>
+        <TextBlock Text="{Binding Path=Name}" Margin="5,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            </StackPanel>
+    </DataTemplate>
+    <Style x:Key="RobotButtonStyleTemplate" TargetType="ListBoxItem">
+     <!--   <Setter Property="Background" Value="White" /> -->
+        <Setter Property="ContentTemplate" Value="{StaticResource RobotButtonTemplate}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="Height" Value="40" />
+    </Style>
+</ResourceDictionary>
